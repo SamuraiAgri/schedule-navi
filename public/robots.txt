@@ -1,2 +1,24 @@
+# Schedule-Navi robots.txt
 User-agent: *
-Disallow:
+Allow: /
+
+# サイトマップ
+Sitemap: https://schedule-navi.com/sitemap.xml
+
+# クロール不要なパス
+Disallow: /build/
+Disallow: /storage/
+Disallow: /*.json$
+
+# 編集ページはインデックス不要（keyパラメータ付き）
+Disallow: /e/*/edit
+
+# Googlebot向け設定
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bingbot向け設定
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
