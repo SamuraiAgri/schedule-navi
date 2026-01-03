@@ -60,16 +60,18 @@ jobs:
           rm -f .env .env.* .gitignore .gitattributes
           rm -rf storage/logs/* storage/framework/cache/* storage/framework/sessions/* storage/framework/views/*
 
-      # 9. LFTP でデプロイ
-      - name: Deploy via LFTP
+      # 9. rsync でデプロイ
+      - name: Deploy via rsync
         run: |
-          sudo apt-get update && sudo apt-get install -y lftp
-          lftp -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }} -e "
-            set sftp:auto-confirm yes;
-            set ssl:verify-certificate no;
-            mirror --reverse --verbose --delete --exclude .env --exclude storage/logs/ --exclude storage/framework/cache/ --exclude storage/framework/sessions/ --exclude storage/framework/views/ ./ /home/laravel-times/www/schedule-navi/;
-            quit
-          "
+          sudo apt-get update && sudo apt-get install -y sshpass
+          sshpass -p "${{ secrets.SFTP_PASSWORD }}" rsync -avz --delete \
+            --exclude='.env' \
+            --exclude='storage/logs/' \
+            --exclude='storage/framework/cache/' \
+            --exclude='storage/framework/sessions/' \
+            --exclude='storage/framework/views/' \
+            -e "ssh -o StrictHostKeyChecking=no -p 22" \
+            ./ ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }}:/home/laravel-times/www/schedule-navi/
 
       # 10. SSH でデプロイ後の処理
       - name: Post-deploy commands
