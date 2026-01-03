@@ -1,5 +1,8 @@
-# GitHub Actions - 自動ビルド＆デプロイ
-# .github/workflows/deploy.yml
+# ============================================
+# 統一デプロイワークフロー - schedule-navi
+# ============================================
+# プッシュ → 自動ビルド → 自動デプロイ
+# ============================================
 
 name: Deploy to Production
 
@@ -29,48 +32,47 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      # 4. フロントエンドをビルド
+      # 4. フロントエンドをビルド（Vite）
       - name: Build frontend
         run: npm run build
 
-      # 5. PHP セットアップ
+      # 5. ビルド確認
+      - name: Verify build
+        run: |
+          echo "📦 Built files:"
+          ls -lh public/build/ || echo "No build folder"
+
+      # 6. PHP セットアップ
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           extensions: mbstring, xml, ctype, json, curl
 
-      # 6. Composer 依存関係をインストール
+      # 7. Composer 依存関係をインストール（本番用）
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction
 
-      # 7. SFTP でデプロイ
-      - name: Deploy via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
-        with:
-          server: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          port: 22
-          local_path: './'
-          remote_path: '/home/laravel-times/www/schedule-navi/'
-          sftp_only: true
-          delete_remote_files: false
-          # 除外するファイル・ディレクトリ
-          exclude: |
-            .git/
-            .github/
-            node_modules/
-            tests/
-            .env
-            .env.*
-            storage/logs/*
-            storage/framework/cache/*
-            storage/framework/sessions/*
-            storage/framework/views/*
+      # 8. 不要ファイルを削除（転送前）
+      - name: Clean up before deploy
+        run: |
+          rm -rf .git .github node_modules tests
+          rm -f .env .env.* .gitignore .gitattributes
+          rm -rf storage/logs/* storage/framework/cache/* storage/framework/sessions/* storage/framework/views/*
 
-      # 8. SSH でデプロイ後の処理
-      - name: Post-deploy commands via SSH
+      # 9. LFTP でデプロイ
+      - name: Deploy via LFTP
+        run: |
+          sudo apt-get update && sudo apt-get install -y lftp
+          lftp -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }} -e "
+            set sftp:auto-confirm yes;
+            set ssl:verify-certificate no;
+            mirror --reverse --verbose --delete --exclude .env --exclude storage/logs/ --exclude storage/framework/cache/ --exclude storage/framework/sessions/ --exclude storage/framework/views/ ./ /home/laravel-times/www/schedule-navi/;
+            quit
+          "
+
+      # 10. SSH でデプロイ後の処理
+      - name: Post-deploy commands
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SFTP_HOST }}
@@ -79,13 +81,12 @@ jobs:
           port: 22
           script: |
             cd /home/laravel-times/www/schedule-navi
-            php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
             php artisan optimize
             chmod -R 775 storage bootstrap/cache
 
-      # 9. デプロイ完了通知
+      # 11. 完了通知
       - name: Deployment completed
-        run: echo "✅ Deployment to schedule-navi.com completed!"
+        run: echo "✅ schedule-navi deployed successfully!"
