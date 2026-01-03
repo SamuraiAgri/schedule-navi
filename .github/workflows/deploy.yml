@@ -1,0 +1,91 @@
+# GitHub Actions - 自動ビルド＆デプロイ
+# .github/workflows/deploy.yml
+
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. コードをチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Node.js セットアップ
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # 3. npm 依存関係をインストール
+      - name: Install npm dependencies
+        run: npm ci
+
+      # 4. フロントエンドをビルド
+      - name: Build frontend
+        run: npm run build
+
+      # 5. PHP セットアップ
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, ctype, json, curl
+
+      # 6. Composer 依存関係をインストール
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      # 7. SFTP でデプロイ
+      - name: Deploy via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          local_path: './'
+          remote_path: '/home/laravel-times/www/schedule-navi/'
+          sftp_only: true
+          delete_remote_files: false
+          # 除外するファイル・ディレクトリ
+          exclude: |
+            .git/
+            .github/
+            node_modules/
+            tests/
+            .env
+            .env.*
+            storage/logs/*
+            storage/framework/cache/*
+            storage/framework/sessions/*
+            storage/framework/views/*
+
+      # 8. SSH でデプロイ後の処理
+      - name: Post-deploy commands via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          script: |
+            cd /home/laravel-times/www/schedule-navi
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan optimize
+            chmod -R 775 storage bootstrap/cache
+
+      # 9. デプロイ完了通知
+      - name: Deployment completed
+        run: echo "✅ Deployment to schedule-navi.com completed!"
