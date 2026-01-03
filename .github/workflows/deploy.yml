@@ -60,17 +60,24 @@ jobs:
           rm -f .env .env.* .gitignore .gitattributes
           rm -rf storage/logs/* storage/framework/cache/* storage/framework/sessions/* storage/framework/views/*
 
-      # 9. rsync でデプロイ
+      # 9. SSH鍵をセットアップ
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.SFTP_HOST }} >> ~/.ssh/known_hosts
+
+      # 10. rsync でデプロイ（SSH鍵認証）
       - name: Deploy via rsync
         run: |
-          sudo apt-get update && sudo apt-get install -y sshpass
-          sshpass -p "${{ secrets.SFTP_PASSWORD }}" rsync -avz --delete \
+          rsync -avz --delete \
             --exclude='.env' \
             --exclude='storage/logs/' \
             --exclude='storage/framework/cache/' \
             --exclude='storage/framework/sessions/' \
             --exclude='storage/framework/views/' \
-            -e "ssh -o StrictHostKeyChecking=no -p 22" \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p 22" \
             ./ ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }}:/home/laravel-times/www/schedule-navi/
 
       # 10. SSH でデプロイ後の処理
