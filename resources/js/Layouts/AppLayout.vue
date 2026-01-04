@@ -45,13 +45,62 @@ defineProps({
         </main>
 
         <!-- フッター -->
-        <footer class="bg-white border-t border-gray-200 mt-auto">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                <div class="flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500">
-                    <div class="flex items-center space-x-2 mb-2 sm:mb-0">
-                        <CalendarDaysIcon class="h-5 w-5" />
-                        <span>Schedule-Navi</span>
+        <footer class="bg-gray-800 text-gray-300 mt-auto">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <!-- About -->
+                    <div class="md:col-span-2">
+                        <div class="flex items-center space-x-2 text-white mb-4">
+                            <CalendarDaysIcon class="h-6 w-6" />
+                            <span class="text-lg font-bold">Schedule-Navi</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-4">
+                            シンプルで使いやすい無料の日程調整サービスです。
+                            会員登録不要で、飲み会から会議まであらゆるシーンでご利用いただけます。
+                        </p>
                     </div>
+
+                    <!-- Links -->
+                    <div>
+                        <h3 class="text-white font-semibold mb-4">サービス</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>
+                                <Link href="/events/create" class="hover:text-white transition-colors">
+                                    イベント作成
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/about" class="hover:text-white transition-colors">
+                                    使い方
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Legal -->
+                    <div>
+                        <h3 class="text-white font-semibold mb-4">法的情報</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>
+                                <Link href="/privacy" class="hover:text-white transition-colors">
+                                    プライバシーポリシー
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/terms" class="hover:text-white transition-colors">
+                                    利用規約
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/contact" class="hover:text-white transition-colors">
+                                    お問い合わせ
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-500">
                     <p>&copy; {{ new Date().getFullYear() }} Schedule-Navi. All rights reserved.</p>
                 </div>
             </div>

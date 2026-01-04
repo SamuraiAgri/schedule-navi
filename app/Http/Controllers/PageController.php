@@ -29,4 +29,12 @@ class PageController extends Controller
     {
         return Inertia::render('Pages/Contact');
     }
+
+    /**
+     * 使い方ガイドページ
+     */
+    public function about()
+    {
+        return Inertia::render('Pages/About');
+    }
 }

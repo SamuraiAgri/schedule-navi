@@ -21,6 +21,7 @@ Route::get('/', [EventController::class, 'index'])->name('home');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/about', [PageController::class, 'about'])->name('about');
 
 // サイトマップ
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
