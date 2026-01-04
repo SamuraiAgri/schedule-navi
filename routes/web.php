@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 // トップページ
 Route::get('/', [EventController::class, 'index'])->name('home');
+
+// 固定ページ
+Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/terms', [PageController::class, 'terms'])->name('terms');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
 // サイトマップ
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
