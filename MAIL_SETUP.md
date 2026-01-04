@@ -9,21 +9,19 @@
 
 ```env
 MAIL_MAILER=smtp
-MAIL_HOST=初期ドメイン.sakura.ne.jp
+MAIL_HOST=laravel-times.sakura.ne.jp
 MAIL_PORT=587
 MAIL_USERNAME=support@schedule-navi.com
-MAIL_PASSWORD=JHzS]GO6Unsx1rY<
+MAIL_PASSWORD=【さくらコントロールパネルで設定したパスワード】
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS=noreply@schedule-navi.com
 MAIL_FROM_NAME="Schedule-Navi"
 ```
 
-### 3. SMTPホスト名について
-さくらサーバーのSMTPホストは以下のいずれかを使用：
-- `初期ドメイン.sakura.ne.jp`（例：`abc12345.sakura.ne.jp`）
-- または `ユーザー名.sakura.ne.jp`
+**⚠️ 重要: パスワードはGitHubにコミットしないでください。.envファイルに直接設定してください。**
 
-コントロールパネルの「サーバ情報」で確認できます。
+### 3. SMTPホスト名
+- `laravel-times.sakura.ne.jp`
 
 ### 4. テストメール送信
 サーバーで以下のコマンドを実行してテスト：
