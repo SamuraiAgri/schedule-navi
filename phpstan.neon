@@ -11,8 +11,4 @@ parameters:
     ignoreErrors:
         # 必要に応じて無視するエラーをここに追加
 
-    excludePaths:
-        - app/Console/Kernel.php
-        - app/Exceptions/Handler.php
-
     checkMissingIterableValueType: false
