@@ -10,5 +10,3 @@ parameters:
 
     ignoreErrors:
         # 必要に応じて無視するエラーをここに追加
-
-    checkMissingIterableValueType: false
