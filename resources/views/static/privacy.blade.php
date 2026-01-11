@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <meta name="description" content="Schedule-Naviのプライバシーポリシーです。個人情報の取り扱いについて説明しています。">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="bg-gray-50">
     <div class="min-h-screen">
         <!-- ヘッダー -->
@@ -90,7 +92,8 @@
                     </p>
                     <p class="text-gray-700 leading-relaxed">
                         Google Analyticsで収集される情報は匿名で収集されており、個人を特定するものではありません。
-                        詳細は<a href="https://policies.google.com/privacy" target="_blank" class="text-blue-600 hover:text-blue-800">Googleのプライバシーポリシー</a>をご確認ください。
+                        詳細は<a href="https://policies.google.com/privacy" target="_blank"
+                            class="text-blue-600 hover:text-blue-800">Googleのプライバシーポリシー</a>をご確認ください。
                     </p>
                 </section>
 
@@ -101,7 +104,8 @@
                         Google AdSenseは、Cookieを使用してユーザーの興味に基づいた広告を配信します。
                     </p>
                     <p class="text-gray-700 leading-relaxed">
-                        パーソナライズド広告を無効にするには、<a href="https://adssettings.google.com/" target="_blank" class="text-blue-600 hover:text-blue-800">Googleの広告設定ページ</a>から設定できます。
+                        パーソナライズド広告を無効にするには、<a href="https://adssettings.google.com/" target="_blank"
+                            class="text-blue-600 hover:text-blue-800">Googleの広告設定ページ</a>から設定できます。
                     </p>
                 </section>
 
@@ -157,4 +161,5 @@
         </footer>
     </div>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <meta name="description" content="Schedule-Naviの利用規約です。サービスをご利用いただく際の条件について説明しています。">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="bg-gray-50">
     <div class="min-h-screen">
         <!-- ヘッダー -->
@@ -162,4 +164,5 @@
         </footer>
     </div>
 </body>
+
 </html>

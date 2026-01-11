@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <meta name="description" content="Schedule-Naviは、スケジュール管理を簡単かつ効率的に行うためのWebアプリケーションです。使い方やサービスの特徴についてご紹介します。">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="bg-gray-50">
     <div class="min-h-screen">
         <!-- ヘッダー -->
@@ -101,7 +103,8 @@
                         </div>
                         <div>
                             <h4 class="font-semibold text-gray-800 mb-2">Q: 他のカレンダーアプリと連携できますか？</h4>
-                            <p class="text-gray-700 pl-4">A: 現在、iCalendar形式でのエクスポート機能を提供しています。Google CalendarやOutlookとの連携も開発中です。</p>
+                            <p class="text-gray-700 pl-4">A: 現在、iCalendar形式でのエクスポート機能を提供しています。Google
+                                CalendarやOutlookとの連携も開発中です。</p>
                         </div>
                         <div>
                             <h4 class="font-semibold text-gray-800 mb-2">Q: スマートフォンでも使えますか？</h4>
@@ -135,4 +138,5 @@
         </footer>
     </div>
 </body>
+
 </html>
